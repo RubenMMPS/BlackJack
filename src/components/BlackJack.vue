@@ -6,31 +6,9 @@ const manoJugador = ref<Carta[]>([])
 const manoCrupier = ref<Carta[]>([])
 const baraja = ref<Carta[]>([]);
 
-const valorJugador = computed(() => {
-  let valor = 0;
-  let numAses = 0;
-  for(let i = 0; i < manoJugador.value.length; i++){
-    if(manoJugador.value[i]!.nombre == "As"){
-      numAses += 1;
-    }
-    valor += manoJugador.value[i]!.valor!
-  }
+const valorJugador = computed(() => calcularValor(manoJugador.value));
 
-  for(let i = 0; i < numAses; i++){
-    if(valor + 10 <= 21){
-      valor += 10;
-    }
-  }
-  return valor;
-})
-
-const valorCrupier = computed(() => {
-  let valor = 0;
-  for(let i = 0; i < manoCrupier.value.length; i++){
-    valor += manoCrupier.value[i]!.valor!
-  }
-  return valor;
-})
+const valorCrupier = computed(() => calcularValor( manoCrupier.value ))
 
 const monstrarManoCrupier = ref(false)
 const contador = ref(0)
@@ -69,6 +47,24 @@ function robarCrupier () {
 
 function plantarse () {
   monstrarManoCrupier.value = true;
+}
+
+function calcularValor(mano: Carta[]){
+  let valor = 0;
+  let numAses = 0;
+  for(let i = 0; i < mano.length; i++){
+    if(mano[i]!.nombre == "As"){
+      numAses += 1;
+    }
+    valor += mano[i]!.valor!
+  }
+
+  for(let i = 0; i < numAses; i++){
+    if(valor + 10 <= 21){
+      valor += 10;
+    }
+  }
+  return valor;
 }
 
 function reiniciar () {
