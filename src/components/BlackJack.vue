@@ -42,10 +42,13 @@ function robar (mano: Carta[]) {
 }
 
 function robarCrupier () {
-
+  while(valorCrupier.value < 17){
+    robar(manoCrupier.value);
+  }
 }
 
 function plantarse () {
+  robarCrupier();
   monstrarManoCrupier.value = true;
 }
 
