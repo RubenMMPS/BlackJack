@@ -8,8 +8,18 @@ const baraja = ref<Carta[]>([]);
 
 const valorJugador = computed(() => {
   let valor = 0;
+  let numAses = 0;
   for(let i = 0; i < manoJugador.value.length; i++){
+    if(manoJugador.value[i]!.nombre == "As"){
+      numAses += 1;
+    }
     valor += manoJugador.value[i]!.valor!
+  }
+
+  for(let i = 0; i < numAses; i++){
+    if(valor + 10 <= 21){
+      valor += 10;
+    }
   }
   return valor;
 })
@@ -90,6 +100,9 @@ function reiniciar () {
     <button v-if="contador >= 1" @click="plantarse">Plantarse</button>
   </div>
   <div v-else>
+    <span>Mano del jugador: [ </span>
+    <span v-for="carta in manoJugador" :key="carta.nombre">{{ carta.nombre }} de {{ carta.palo }}, </span>
+    <span>]</span>
     <p>Has perdido, tu valor es {{ valorJugador }}</p>
     <button @click="reiniciar">Reiniciar</button>
   </div>
