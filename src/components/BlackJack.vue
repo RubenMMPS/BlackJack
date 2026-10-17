@@ -1,10 +1,26 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import type { Carta } from '../models/Card'
 
 const manoJugador = ref<Carta[]>([])
 const manoCrupier = ref<Carta[]>([])
 const baraja = ref<Carta[]>([]);
+
+const valorJugador = computed(() => {
+  let valor = 0;
+  for(let i = 0; i < manoJugador.value.length; i++){
+    valor += manoJugador.value[i]!.valor!
+  }
+  return valor;
+})
+
+const valorCrupier = computed(() => {
+  let valor = 0;
+  for(let i = 0; i < manoCrupier.value.length; i++){
+    valor += manoCrupier.value[i]!.valor!
+  }
+  return valor;
+})
 
 const monstrarManoCrupier = ref(false)
 const contador = ref(0)
@@ -44,14 +60,6 @@ function robarCrupier () {
 function plantarse () {
 
 }
-
-function valorActual (mano: Carta[]) {
-  let valor = 0;
-  for(let i = 0; i < mano.length; i++){
-    valor += mano[i]!.valor!
-  }
-  return valor;
-}
 </script>
 
 <template>
@@ -65,7 +73,7 @@ function valorActual (mano: Carta[]) {
     <button v-if="contador < 1" @click="repartirCartas">Repartir cartas</button>
     <button v-if="contador >= 1" @click="robar(manoJugador)">Robar Carta</button>
     <br>
-    <p>Valor actual: {{ valorActual(manoJugador) }}</p>
+    <p>Valor actual: {{ valorJugador }}</p>
     <button v-if="contador >= 1" @click="plantarse">Plantarse</button>
   </div>
 </template>
