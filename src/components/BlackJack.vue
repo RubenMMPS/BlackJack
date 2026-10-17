@@ -19,22 +19,22 @@ function generarBaraja () {
         baraja.value.push({ nombre: nombres[j]!, valor: valores[j]!, palo: palos[i]!})
       }
     }
+    baraja.value.sort(() => Math.random() - 0.5);
 }
 
 
 function repartirCartas () {
   generarBaraja();
 
-    manoJugador.value.push(baraja.value.shift()!);
-    manoCrupier.value.push(baraja.value.shift()!);
-
-    manoJugador.value.push(baraja.value.shift()!);
-    manoCrupier.value.push(baraja.value.shift()!);
+    for(let i=0; i < 2; i++){
+      robar(manoJugador.value);
+      robar(manoCrupier.value)
+    }
 
     contador.value += 1;
 }
-function robar () {
-
+function robar (mano: Carta[]) {
+  mano.push(baraja.value.shift()!);
 }
 
 function robarCrupier () {
@@ -55,7 +55,7 @@ function plantarse () {
     <p v-if="monstrarManoCrupier">Mano del crupier: {{ manoCrupier }}</p>
     <p v-else>Mano del crupier: 🂠 🂠</p>
     <button v-if="contador < 1" @click="repartirCartas">Repartir cartas</button>
-    <button v-if="contador >= 1" @click="robar">Robar Carta</button>
+    <button v-if="contador >= 1" @click="robar(manoJugador)">Robar Carta</button>
     <br>
     <button v-if="contador >= 1" @click="plantarse">Plantarse</button>
   </div>
