@@ -58,22 +58,39 @@ function robarCrupier () {
 }
 
 function plantarse () {
+  monstrarManoCrupier.value = true;
+}
 
+function reiniciar () {
+  manoJugador.value = [];
+  manoCrupier.value = [];
+  baraja.value = [];
+  contador.value = 0;
+  monstrarManoCrupier.value = false;
 }
 </script>
 
 <template>
-  <div class="blackjack">
-    <h1>BlackJack</h1>
+  <h1>BlackJack</h1>
+  <div v-if="valorJugador <= 21" class="blackjack">
     <span>Mano del jugador: [ </span>
     <span v-for="carta in manoJugador" :key="carta.nombre">{{ carta.nombre }} de {{ carta.palo }}, </span>
     <span>]</span>
-    <p v-if="monstrarManoCrupier">Mano del crupier: {{ manoCrupier }}</p>
+    <div v-if="monstrarManoCrupier">
+      <span>Mano del crupier: [ </span>
+      <span v-for="carta in manoCrupier" :key="carta.nombre">{{ carta.nombre }} de {{ carta.palo }}, </span>
+      <span>]</span>
+    </div>
     <p v-else>Mano del crupier: 🂠 🂠</p>
     <button v-if="contador < 1" @click="repartirCartas">Repartir cartas</button>
     <button v-if="contador >= 1" @click="robar(manoJugador)">Robar Carta</button>
     <br>
-    <p>Valor actual: {{ valorJugador }}</p>
+    <p>Valor actual Jugador: {{ valorJugador }}</p>
+    <p v-if="monstrarManoCrupier">Valor actual Crupier: {{ valorCrupier }}</p>
     <button v-if="contador >= 1" @click="plantarse">Plantarse</button>
+  </div>
+  <div v-else>
+    <p>Has perdido, tu valor es {{ valorJugador }}</p>
+    <button @click="reiniciar">Reiniciar</button>
   </div>
 </template>
