@@ -8,10 +8,11 @@ const baraja = ref<Carta[]>([]);
 
 const valorJugador = computed(() => calcularValor(manoJugador.value));
 
-const valorCrupier = computed(() => calcularValor( manoCrupier.value ))
+const valorCrupier = computed(() => calcularValor( manoCrupier.value ));
 
-const monstrarManoCrupier = ref(false)
-const contador = ref(0)
+const monstrarManoCrupier = ref(false);
+const contador = ref(0);
+let ganador = "";
 
 function generarBaraja () {
     const palos = ['Corazon', 'Diamante', 'Trébol', 'Pica'];
@@ -50,6 +51,7 @@ function robarCrupier () {
 function plantarse () {
   robarCrupier();
   monstrarManoCrupier.value = true;
+  calcularGanador();
 }
 
 function calcularValor(mano: Carta[]){
@@ -68,6 +70,17 @@ function calcularValor(mano: Carta[]){
     }
   }
   return valor;
+}
+
+function calcularGanador(){
+  if(valorCrupier.value < valorJugador.value){
+    ganador = "Jugador";
+    return;
+  }else if(valorCrupier.value > valorJugador.value){
+    ganador = "Crupier";
+    return;
+  }
+  ganador = "Empate"; 
 }
 
 function reiniciar () {
@@ -92,11 +105,16 @@ function reiniciar () {
     </div>
     <p v-else>Mano del crupier: 🂠 🂠</p>
     <button v-if="contador < 1" @click="repartirCartas">Repartir cartas</button>
-    <button v-if="contador >= 1" @click="robar(manoJugador)">Robar Carta</button>
+    <button v-if="contador >= 1 && !ganador" @click="robar(manoJugador)">Robar Carta</button>
     <br>
     <p>Valor actual Jugador: {{ valorJugador }}</p>
     <p v-if="monstrarManoCrupier">Valor actual Crupier: {{ valorCrupier }}</p>
-    <button v-if="contador >= 1" @click="plantarse">Plantarse</button>
+    <button v-if="contador >= 1 && !ganador" @click="plantarse">Plantarse</button>
+    <div v-if="ganador">
+      <p v-if="ganador == 'Jugador'">Enhorabuena has ganado!!</p>
+      <p v-if="ganador == 'Crupier'">Lastimosamente has perdido...</p>
+      <p v-if="ganador == 'Empate'">Has Empatado!!</p>
+    </div>
   </div>
   <div v-else>
     <span>Mano del jugador: [ </span>
