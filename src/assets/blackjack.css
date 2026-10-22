@@ -1,0 +1,180 @@
+.mesa {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 70px 20px 30px;
+  color: #fff;
+  background:
+    radial-gradient(ellipse at 50% 35%, #1f8f3a 0%, #146b29 55%, #0b4a1b 100%);
+  border-bottom: 14px solid #6b3a14;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.dinero {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px 16px;
+  background: #90ee90;
+  color: #0b3d16;
+  font-weight: 700;
+  border-bottom-left-radius: 10px;
+}
+
+/* ---------- Manos ---------- */
+.zona-crupier,
+.zona-jugador {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.zona-crupier {
+  min-height: 190px;
+}
+
+.mano {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cartas {
+  display: flex;
+}
+
+.carta {
+  width: 100px;
+  height: auto;
+  border-radius: 6px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.45);
+  animation: repartir 0.3s ease-out;
+}
+
+/* Cartas solapadas como en la imagen */
+.carta + .carta {
+  margin-left: -55px;
+}
+
+@keyframes repartir {
+  from { transform: translateY(-30px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+/* Etiqueta amarilla con el valor */
+.valor {
+  background: #ffe600;
+  color: #111;
+  font-weight: 800;
+  font-size: 1rem;
+  padding: 2px 8px;
+  border: 2px solid #111;
+  border-radius: 3px;
+  min-width: 24px;
+  text-align: center;
+}
+
+/* ---------- Texto del tapete ---------- */
+.tapete-texto {
+  text-align: center;
+  color: rgba(200, 255, 200, 0.55);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 16px 0 4px;
+}
+.tapete-texto h1 {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 2.4rem;
+}
+.tapete-texto p {
+  margin: 4px 0 0;
+  font-size: 0.8rem;
+}
+
+.mensaje {
+  min-height: 28px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+}
+.mensaje p { margin: 0; }
+
+/* ---------- Controles ---------- */
+.acciones,
+.fila {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.apuesta-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 24px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+}
+.apuesta-form p { margin: 0; }
+.error { color: #ff9a9a; font-weight: 600; }
+
+input[type='number'] {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: none;
+  width: 180px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: 2px solid #f5d36b;
+  border-radius: 999px;
+  background: linear-gradient(#f9e08a, #d9a92b);
+  color: #3a2600;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.1s, filter 0.1s;
+}
+.btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.btn:active { transform: translateY(1px); }
+.btn-secundario {
+  background: linear-gradient(#e86a5e, #b72f22);
+  border-color: #ff9b90;
+  color: #fff;
+}
+
+/* ---------- Ficha de apuesta ---------- */
+.ficha-apuesta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.ficha {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #d62828;
+  color: #fff;
+  font-weight: 800;
+  border: 4px dashed #fff;
+  box-shadow: 0 0 0 3px #d62828, 0 3px 6px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 600px) {
+  .carta { width: 70px; }
+  .carta + .carta { margin-left: -38px; }
+  .tapete-texto h1 { font-size: 1.8rem; }
+}
