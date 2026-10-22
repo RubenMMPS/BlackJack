@@ -19,13 +19,13 @@ let apuesta = ref(0);
 let errorApuesta = ref('');
 
 function generarBaraja () {
-    const palos = ['Corazon', 'Diamante', 'Trébol', 'Pica'];
+    const palos = ['Corazón', 'Diamante', 'Trébol', 'Pica'];
     const nombres = ['As', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jota', 'Reina', 'Rey'];
     const valores = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10];
 
     for (let i = 0; i < palos.length; i++) {
       for(let j = 0; j < nombres.length; j++){
-        baraja.value.push({ nombre: nombres[j]!, valor: valores[j]!, palo: palos[i]!})
+        baraja.value.push({ nombre: nombres[j]!, valor: valores[j]!, palo: palos[i]!, img: nombres[j] + palos[i]!.normalize('NFD').replace(/[\u0300-\u036f]/g, '') + ".png" });
       }
     }
     baraja.value.sort(() => Math.random() - 0.5);
@@ -131,12 +131,16 @@ function reiniciar () {
       <span>Mano del jugador: [ </span>
       <span v-for="carta in manoJugador" :key="carta.nombre">{{ carta.nombre }} de {{ carta.palo }}, </span>
       <span>]</span>
+      <br>
+      <img v-for="carta in manoJugador" :key="carta.nombre" :src="`/cartas/${carta.img}`" alt="Carta" style="width: 100px; height: auto; margin-right: 10px;">
       <div v-if="monstrarManoCrupier">
         <span>Mano del crupier: [ </span>
         <span v-for="carta in manoCrupier" :key="carta.nombre">{{ carta.nombre }} de {{ carta.palo }}, </span>
         <span>]</span>
+        <br>
+      <img v-for="carta in manoCrupier" :key="carta.nombre" :src="`/cartas/${carta.img}`" alt="Carta" style="width: 100px; height: auto; margin-right: 10px;">
       </div>
-      <p v-else>Mano del crupier: 🂠 🂠</p>
+      <p v-else>Mano del crupier: <br><img v-for="carta in manoCrupier" src="/cartas/DetrasCartaRojo.png" alt="Carta" style="width: 100px; height: auto; margin-right: 10px;"></p>
       <button v-if="contador < 1" @click="repartirCartas">Repartir cartas</button>
       <button v-if="contador >= 1 && !ganador" @click="robar(manoJugador)">Robar Carta</button>
       <br>
@@ -151,9 +155,11 @@ function reiniciar () {
       </div>
       </div>
       <div v-else>
-        <span>Mano del jugador: [ </span>
-        <span v-for="carta in manoJugador" :key="carta.nombre">{{ carta.nombre }} de {{ carta.palo }}, </span>
-        <span>]</span>
+      <span>Mano del jugador: [ </span>
+      <span v-for="carta in manoJugador" :key="carta.nombre">{{ carta.nombre }} de {{ carta.palo }}, </span>
+      <span>]</span>
+      <br>
+      <img v-for="carta in manoJugador" :key="carta.nombre" :src="`/cartas/${carta.img}`" alt="Carta" style="width: 100px; height: auto; margin-right: 10px;">
         <p>Has perdido, tu valor es {{ valorJugador }}</p>
         <button @click="reiniciar">Reiniciar</button>
       </div>
