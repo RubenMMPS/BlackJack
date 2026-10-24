@@ -1,0 +1,55 @@
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  padding: 0 24px;
+  background: linear-gradient(#1a1a1a, #0d0d0d);
+  border-bottom: 3px solid #d9a92b;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(#f9e08a, #d9a92b);
+  color: #1a1a1a;
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.titulo {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #f5d36b;
+}
+
+.derecha {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+@media (max-width: 600px) {
+  .app-header {
+    padding: 0 12px;
+  }
+  .titulo {
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+  }
+}
