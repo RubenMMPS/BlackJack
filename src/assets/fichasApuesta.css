@@ -1,0 +1,52 @@
+.fichas {
+  --ficha: 2.125rem; 
+  --peek: 0.438rem;   
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.625rem;
+  flex-shrink: 0;
+  margin-bottom: 0.625rem;
+}
+
+.pila {
+  position: relative;
+  flex-shrink: 0;
+  width: var(--ficha);
+  height: calc(var(--ficha) + (var(--n) - 1) * var(--peek));
+}
+
+.ficha {
+  position: absolute;
+  left: 0;
+  bottom: calc((var(--i) - 1) * var(--peek));
+  z-index: var(--i);
+
+  width: var(--ficha);
+  height: var(--ficha);
+  flex-shrink: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--color);
+  border: 0.188rem dashed var(--borde);
+  box-shadow: 0 0 0 0.125rem var(--color), 0 0.125rem 0.25rem rgba(0, 0, 0, 0.55);
+  color: var(--texto);
+  font-size: 0.6rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.cantidad {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.75rem;
+  padding: 0.063rem 0.313rem;
+  border-radius: 62.438rem;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  z-index: 99;
+}

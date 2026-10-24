@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import type { Carta } from '../models/Card'
+import { useDineroStore } from '../stores/dinero'
+import FichasApuesta from './FichasApuesta.vue'
 
 const manoJugador = ref<Carta[]>([])
 const manoCrupier = ref<Carta[]>([])
@@ -12,7 +14,7 @@ const valorCrupier = computed(() => calcularValor(manoCrupier.value))
 const monstrarManoCrupier = ref(false)
 const contador = ref(0)
 const ganador = ref('')
-const dinero = ref(1000)
+const banca = useDineroStore()
 const apuestaInput = ref(0)
 const apuesta = ref(0)
 const errorApuesta = ref('')
@@ -84,27 +86,27 @@ function calcularValor(mano: Carta[]) {
 function calcularGanador() {
   if (valorCrupier.value < valorJugador.value || valorCrupier.value > 21) {
     ganador.value = 'Jugador'
-    dinero.value += apuesta.value * 2
+    banca.sumar(apuesta.value * 2)
     return
   } else if (valorCrupier.value > valorJugador.value) {
     ganador.value = 'Crupier'
     return
   }
   ganador.value = 'Empate'
-  dinero.value += apuesta.value
+  banca.sumar(apuesta.value)
 }
 
 function apostar(cantidad: number) {
-  if (cantidad > dinero.value) {
+  if (cantidad > banca.dinero) {
     errorApuesta.value = 'La apuesta no puede ser superior a tu dinero actual.'
     return
-  } else if (!cantidad || cantidad < 1) {
-    errorApuesta.value = 'La apuesta no puede ser inferior a 1€.'
+  } else if (!Number.isInteger(cantidad) || cantidad < 1) {
+    errorApuesta.value = 'La apuesta debe ser un número entero de al menos 1€.'
     return
   }
   errorApuesta.value = ''
   apuesta.value = cantidad
-  dinero.value -= cantidad
+  banca.restar(cantidad)
 }
 
 function reiniciar() {
@@ -122,8 +124,6 @@ function reiniciar() {
 
 <template>
   <div class="mesa">
-    <header class="dinero">Dinero actual: {{ dinero }}€</header>
-
     <section class="zona-crupier">
       <div v-if="manoCrupier.length" class="mano">
         <span class="valor">{{ valorCrupierVisible }}</span>
@@ -159,7 +159,7 @@ function reiniciar() {
             type="number"
             v-model.number="apuestaInput"
             min="1"
-            :max="dinero"
+            :max="banca.dinero"
             placeholder="Cantidad a apostar"
             @keyup.enter="apostar(apuestaInput)"
           />
@@ -193,7 +193,7 @@ function reiniciar() {
         </div>
 
         <div class="ficha-apuesta">
-          <div class="ficha">{{ apuesta }}</div>
+          <FichasApuesta :cantidad="apuesta" />
           <span>{{ apuesta }}€</span>
         </div>
       </template>

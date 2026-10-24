@@ -1,7 +1,11 @@
 <script setup lang="ts">
+import { useDineroStore } from '../stores/dinero'
+
 defineProps<{
   titulo?: string
 }>()
+
+const banca = useDineroStore()
 </script>
 
 <template>
@@ -11,9 +15,16 @@ defineProps<{
       <span class="titulo">{{ titulo ?? 'Casino' }}</span>
     </div>
 
-    <!-- Contenido opcional a la derecha (dinero, usuario, menú...) -->
-    <div class="derecha">
-      <slot />
+    <!-- Aquí irá la navegación entre juegos -->
+    <nav class="nav">
+      <slot name="nav" />
+    </nav>
+
+    <button class="reinicio-dinero" v-if="banca.dinero == 0" @click="banca.reiniciar">Reiniciar dinero</button>
+
+    <div class="dinero">
+      <span class="dinero-etiqueta">Saldo</span>
+      <span class="dinero-valor">{{ banca.dinero }}€</span>
     </div>
   </header>
 </template>
