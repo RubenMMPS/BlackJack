@@ -17,7 +17,8 @@ const banca = useDineroStore()
 
     <!-- Aquí irá la navegación entre juegos -->
     <nav class="nav">
-      <slot name="nav" />
+      <RouterLink to="/blackjack" class="nav-link" active-class="active">BlackJack</RouterLink>
+      <RouterLink to="/carreraCaballos" class="nav-link" active-class="active">Carrera de Caballos</RouterLink>
     </nav>
 
     <button class="reinicio-dinero" v-if="banca.dinero == 0" @click="banca.reiniciar">Reiniciar dinero</button>
