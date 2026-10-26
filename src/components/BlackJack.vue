@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import type { Carta } from '../models/Card'
-import { useDineroStore } from '../stores/dinero'
 import FichasApuesta from './FichasApuesta.vue'
+import { useApuesta } from '../composables/useApuesta'
+import ApuestaForm from './ApuestaForm.vue'
+
+const { apuesta, errorApuesta, apostar, ganar, empatar, reiniciarApuesta } = useApuesta()
 
 const manoJugador = ref<Carta[]>([])
 const manoCrupier = ref<Carta[]>([])
@@ -14,10 +17,6 @@ const valorCrupier = computed(() => calcularValor(manoCrupier.value))
 const monstrarManoCrupier = ref(false)
 const contador = ref(0)
 const ganador = ref('')
-const banca = useDineroStore()
-const apuestaInput = ref(0)
-const apuesta = ref(0)
-const errorApuesta = ref('')
 
 const valorCrupierVisible = computed(() =>
   monstrarManoCrupier.value
@@ -86,27 +85,14 @@ function calcularValor(mano: Carta[]) {
 function calcularGanador() {
   if (valorCrupier.value < valorJugador.value || valorCrupier.value > 21) {
     ganador.value = 'Jugador'
-    banca.sumar(apuesta.value * 2)
+    ganar()
     return
   } else if (valorCrupier.value > valorJugador.value) {
     ganador.value = 'Crupier'
     return
   }
   ganador.value = 'Empate'
-  banca.sumar(apuesta.value)
-}
-
-function apostar(cantidad: number) {
-  if (cantidad > banca.dinero) {
-    errorApuesta.value = 'La apuesta no puede ser superior a tu dinero actual.'
-    return
-  } else if (!Number.isInteger(cantidad) || cantidad < 1) {
-    errorApuesta.value = 'La apuesta debe ser un número entero de al menos 1€.'
-    return
-  }
-  errorApuesta.value = ''
-  apuesta.value = cantidad
-  banca.restar(cantidad)
+  empatar()
 }
 
 function reiniciar() {
@@ -116,9 +102,7 @@ function reiniciar() {
   contador.value = 0
   monstrarManoCrupier.value = false
   ganador.value = ''
-  apuesta.value = 0
-  apuestaInput.value = 0
-  errorApuesta.value = ''
+  reiniciarApuesta()
 }
 </script>
 
@@ -151,21 +135,7 @@ function reiniciar() {
     </div>
 
     <section class="zona-jugador">
-      <div v-if="apuesta < 1" class="apuesta-form">
-        <p v-if="errorApuesta" class="error">{{ errorApuesta }}</p>
-        <p>Realiza una apuesta para comenzar el juego.</p>
-        <div class="fila">
-          <input
-            type="number"
-            v-model.number="apuestaInput"
-            min="1"
-            :max="banca.dinero"
-            placeholder="Cantidad a apostar"
-            @keyup.enter="apostar(apuestaInput)"
-          />
-          <button class="btn" @click="apostar(apuestaInput)">Apostar</button>
-        </div>
-      </div>
+      <ApuestaForm v-if="apuesta < 1" :error="errorApuesta" @apostar="apostar" />
 
       <template v-else>
         <div v-if="manoJugador.length" class="mano">
