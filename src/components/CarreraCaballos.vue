@@ -5,7 +5,7 @@ import type { Caballo } from '../models/Horse'
 import { useApuesta } from '../composables/useApuesta'
 import ApuestaForm from './ApuestaForm.vue'
 
-const { apuesta, errorApuesta, apostar, ganar, empatar, reiniciarApuesta } = useApuesta()
+const { apuesta, errorApuesta, apostar, ganar, reiniciarApuesta } = useApuesta()
 
 const carreraEnCurso = ref(false)
 const caballoElegido = ref<number | null>(null)
@@ -131,7 +131,7 @@ function calcularResultado(){
     
 
     <template v-else>
-      <h1 class="titulo">Carrera de Caballos</h1>
+      <h1 class="titulo" :class="{ 'titulo--minimizado': ganadorCarrera }">Carrera de Caballos</h1>
 
       <div class="pista">
         <div class="meta"></div>
@@ -156,14 +156,15 @@ function calcularResultado(){
       </div>
 
       <button
+      v-if="!ganadorCarrera"
         class="boton"
         @click="iniciar_carrera"
-        :disabled="carreraEnCurso || caballoElegido === null || !!ganadorCarrera"
+        :disabled="carreraEnCurso || caballoElegido === null"
       >
         {{ carreraEnCurso ? 'Carrera en curso...' : 'Iniciar carrera' }}
       </button>
 
-      <div v-if="ganadorCarrera" class="resultado">
+      <div v-if="ganadorCarrera" class="resultado"">
         <h2>¡Ha ganado el caballo {{ ganadorCarrera.color }}!</h2>
 
         <p v-if="ganadorCarrera.id === caballoElegido">
