@@ -114,6 +114,13 @@
     transform: scale(0.97);
 }
 
+.resultado {
+    font-size: 1rem;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 0.5rem;
+}
+
 /* Móvil */
 @media (max-width: 40rem) {
     .carrera-caballos {
