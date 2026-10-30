@@ -9,8 +9,8 @@ export function useApuesta() {
   const hayApuesta = computed(() => apuesta.value > 0)
 
   function apostar(cantidad: number): boolean {
-    if (!Number.isInteger(cantidad) || cantidad < 1) {
-      errorApuesta.value = 'La apuesta debe ser un número entero de al menos 1€.'
+    if ( cantidad < 1) {
+      errorApuesta.value = 'La apuesta debe ser de al menos 1€.'
       return false
     }
     if (cantidad > banca.dinero) {

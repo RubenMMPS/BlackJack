@@ -16,19 +16,19 @@ let temporizador: ReturnType<typeof setInterval> | undefined
 const caballos = ref<Caballo[]>([
   {
     id: 1, color: 'rojo', posicionX: 0, img: 'caballoRojo.png',
-    cuota: 1.8, avanceMin: 3, avanceMax: 7
+    cuota: 1.8, avanceMin: 3, avanceMax: 10
   },
   {
     id: 2, color: 'azul', posicionX: 0, img: 'caballoAzul.png',
-    cuota: 2.5, avanceMin: 3, avanceMax: 6
+    cuota: 2.5, avanceMin: 2, avanceMax: 10
   },
   {
     id: 3, color: 'verde', posicionX: 0, img: 'caballoVerde.png',
-    cuota: 4, avanceMin: 3, avanceMax: 5
+    cuota: 4, avanceMin: 1, avanceMax: 10
   },
   {
     id: 4, color: 'amarillo', posicionX: 0, img: 'caballoAmarillo.png',
-    cuota: 6, avanceMin: 3, avanceMax: 4
+    cuota: 6, avanceMin: 0, avanceMax: 10
   }
 ])
 
@@ -111,7 +111,7 @@ function calcularResultado(){
     <section class="seleccion-caballo">
         <h2>¿Quién ganará la carrera?</h2>
 
-        <label v-for="caballo in caballos" :key="caballo.id">
+        <label class="caballo-label" v-for="caballo in caballos" :key="caballo.id">
           <input
             type="radio"
             :value="caballo.id"
@@ -119,7 +119,8 @@ function calcularResultado(){
             :disabled="carreraEnCurso"
           />
 
-          {{ caballo.color }} — Cuota: {{ caballo.cuota.toFixed(2) }}
+          <span class="caballo-nombre">{{ caballo.color }}</span>
+          <span class="caballo-cuota">x{{ caballo.cuota.toFixed(2) }}</span>
         </label>
       </section>
       <ApuestaForm
@@ -151,6 +152,7 @@ function calcularResultado(){
               :src="`/caballos/${caballo.img}`"
               :alt="`Caballo ${caballo.color}`"
             />
+            <span v-if="caballo.id === caballoElegido" class="mi-caballo">Tú</span>
           </div>
         </div>
       </div>

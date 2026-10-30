@@ -47,6 +47,69 @@
   justify-content: center;
 }
 
+/* Enlaces de navegación */
+.nav-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0.625rem 1.125rem;
+
+  color: #d0d0d0;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.025rem;
+
+  border: 0.0625rem solid transparent;
+  border-radius: 0.5rem;
+
+  transition: all 0.2s ease;
+}
+
+/* Efecto al pasar el ratón */
+.nav-link:hover {
+  color: #f5d36b;
+  background: rgba(217, 169, 43, 0.1);
+  border-color: rgba(217, 169, 43, 0.4);
+}
+
+/* Enlace de la página actual */
+.nav-link.active {
+  color: #f5d36b;
+  background: linear-gradient(
+    135deg,
+    rgba(217, 169, 43, 0.2),
+    rgba(217, 169, 43, 0.08)
+  );
+  border-color: #d9a92b;
+
+  box-shadow:
+    0 0 0.5rem rgba(217, 169, 43, 0.2),
+    inset 0 0 0.5rem rgba(217, 169, 43, 0.05);
+}
+
+.nav-link.active::after {
+  content: "";
+  position: absolute;
+  bottom: -0.1875rem;
+  left: 25%;
+  width: 50%;
+  height: 0.125rem;
+  background: #f5d36b;
+  border-radius: 1rem;
+}
+
+.nav-link:active {
+  transform: scale(0.96);
+}
+
+.nav-link:focus-visible {
+  outline: 0.125rem solid #f5d36b;
+  outline-offset: 0.1875rem;
+}
+
 .dinero {
   display: flex;
   align-items: baseline;
@@ -102,5 +165,14 @@
 
   .dinero-etiqueta {
     display: none;
+  }
+
+  .nav {
+    gap: 0.25rem;
+  }
+
+  .nav-link {
+    padding: 0.5rem 0.625rem;
+    font-size: 0.75rem;
   }
 }

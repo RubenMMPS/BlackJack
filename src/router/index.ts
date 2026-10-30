@@ -7,8 +7,7 @@ const router = createRouter({
   routes: [
     { path: '/', redirect: '/blackjack' },
     { path: '/blackjack', component: BlackJack },
-    { path: '/carrera-caballos', component: CarreraCaballos },
-    { path: '/CarreraCaballos', redirect: '/carrera-caballos' },
+    { path: '/CarreraCaballos', component: CarreraCaballos },
   ],
 })
 

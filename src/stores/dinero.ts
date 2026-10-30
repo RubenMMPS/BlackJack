@@ -28,7 +28,6 @@ export const useDineroStore = defineStore('dinero', () => {
     }
   })
 
-  /** Resta dinero. Devuelve false si no hay saldo suficiente. */
   function restar(cantidad: number): boolean {
     if (cantidad <= 0 || cantidad > dinero.value) return false
     dinero.value -= cantidad
@@ -36,7 +35,7 @@ export const useDineroStore = defineStore('dinero', () => {
   }
 
   function sumar(cantidad: number) {
-    if (cantidad > 0) dinero.value += cantidad
+    if (cantidad > 0) dinero.value += parseFloat(cantidad.toFixed(2))
   }
 
   function reiniciar() {
