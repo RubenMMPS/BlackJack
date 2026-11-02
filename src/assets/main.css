@@ -47,7 +47,6 @@ main {
   transition: all 0.2s ease;
 }
 
-/* Efecto al pasar el ratón */
 .nav-link:hover {
   color: #f5d36b;
   background: rgba(217, 169, 43, 0.1);
