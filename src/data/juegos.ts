@@ -35,6 +35,15 @@ export const JUEGOS: Juego[] = [
     icono: '🎰',
     simbolo: '♦',
     color: '#1d5fd1',
-    disponible: false // se activa cuando lo tengas hecho
+    disponible: true
+  },
+  {
+    id: 'ruleta',
+    nombre: 'Ruleta',
+    descripcion: 'Apuesta al número o color y gira la ruleta.',
+    icono: '🎡',
+    simbolo: '●',
+    color: '#28a01d',
+    disponible: false
   }
 ]
