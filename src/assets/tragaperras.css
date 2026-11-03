@@ -7,7 +7,7 @@
   display: flex;
   padding: 0.75rem 1rem;
   color: #fff;
-  background: radial-gradient(ellipse at 50% 30%, #4a1a6b 0%, #2a0f45 55%, #14061f 100%);
+  background: radial-gradient(ellipse at 50% 35%, #1f8f3a 0%, #146b29 55%, #0b4a1b 100%);
   border-bottom: 10px solid #6b3a14;
   overflow-y: auto;
 }
