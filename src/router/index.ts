@@ -3,6 +3,7 @@ import BlackJack from '../components/BlackJack.vue'
 import CarreraCaballos from '../components/CarreraCaballos.vue'
 import MenuPrincipal from '../components/MenuPrincipal.vue'
 import Tragaperras from '../components/Tragaperras.vue'
+import Ruleta from '../components/Ruleta.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -10,7 +11,8 @@ const router = createRouter({
     { path: '/', component: MenuPrincipal },
     { path: '/blackjack', component: BlackJack },
     { path: '/carreraCaballos', component: CarreraCaballos },
-    { path: '/tragaperras', component: Tragaperras}
+    { path: '/tragaperras', component: Tragaperras},
+    { path: '/ruleta', component: Ruleta}
   ],
 })
 

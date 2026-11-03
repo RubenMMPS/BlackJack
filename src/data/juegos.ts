@@ -44,6 +44,6 @@ export const JUEGOS: Juego[] = [
     icono: '🎡',
     simbolo: '●',
     color: '#28a01d',
-    disponible: false
+    disponible: true
   }
 ]
