@@ -27,6 +27,7 @@ const valorCrupierVisible = computed(() =>
 const jugadorSePasa = computed(() => valorJugador.value > 21)
 
 function generarBaraja() {
+  baraja.value = []
   const palos = ['Corazón', 'Diamante', 'Trébol', 'Pica']
   const nombres = ['As', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jota', 'Reina', 'Rey']
   const valores = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
@@ -41,7 +42,18 @@ function generarBaraja() {
       })
     }
   }
-  baraja.value.sort(() => Math.random() - 0.5)
+  barajarBaraja()
+}
+
+function barajarBaraja() {
+  for (let i = baraja.value.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+
+    ;[baraja.value[i], baraja.value[j]] = [
+      baraja.value[j]!,
+      baraja.value[i]!
+    ]
+  }
 }
 
 function repartirCartas() {
