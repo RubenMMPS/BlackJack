@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref } from 'vue'
 import { useDineroStore } from '../stores/dinero'
-import { TIPOS_FICHA } from '../utils/fichas'
+import { TIPOS_FICHA, desglosarApuesta } from '../utils/fichas'
 import FichasApuesta from './FichasApuesta.vue'
 
 const ORDEN = [
@@ -52,14 +52,16 @@ Object.assign(DEFINICIONES, {
 interface Celda {
   clave: string
   etiqueta: string
-  columna: string
-  fila: string
+  c: number
+  cs: number
+  f: number
+  fs: number
   clase: string
 }
 
 const CELDAS: Celda[] = []
 
-CELDAS.push({ clave: 'n-0', etiqueta: '0', columna: '1', fila: '1 / span 3', clase: 'numero verde' })
+CELDAS.push({ clave: 'n-0', etiqueta: '0', c: 1, cs: 1, f: 1, fs: 3, clase: 'numero verde' })
 
 for (let r = 0; r < 3; r++) {
   for (let c = 0; c < 12; c++) {
@@ -67,14 +69,16 @@ for (let r = 0; r < 3; r++) {
     CELDAS.push({
       clave: `n-${n}`,
       etiqueta: String(n),
-      columna: String(c + 2),
-      fila: String(r + 1),
+      c: c + 2,
+      cs: 1,
+      f: r + 1,
+      fs: 1,
       clase: `numero ${colorDe(n)}`
     })
   }
 }
 ;(['col3', 'col2', 'col1'] as const).forEach((clave, r) => {
-  CELDAS.push({ clave, etiqueta: '2:1', columna: '14', fila: String(r + 1), clase: 'exterior' })
+  CELDAS.push({ clave, etiqueta: '2:1', c: 14, cs: 1, f: r + 1, fs: 1, clase: 'exterior columna' })
 })
 ;(
   [
@@ -83,7 +87,7 @@ for (let r = 0; r < 3; r++) {
     ['doc3', '3ª docena']
   ] as const
 ).forEach(([clave, etiqueta], i) => {
-  CELDAS.push({ clave, etiqueta, columna: `${2 + i * 4} / span 4`, fila: '4', clase: 'exterior' })
+  CELDAS.push({ clave, etiqueta, c: 2 + i * 4, cs: 4, f: 4, fs: 1, clase: 'exterior' })
 })
 ;(
   [
@@ -98,8 +102,10 @@ for (let r = 0; r < 3; r++) {
   CELDAS.push({
     clave,
     etiqueta,
-    columna: `${2 + i * 2} / span 2`,
-    fila: '5',
+    c: 2 + i * 2,
+    cs: 2,
+    f: 5,
+    fs: 1,
     clase: `exterior ${color}`
   })
 })
@@ -108,6 +114,7 @@ const FICHAS_APUESTA = [...TIPOS_FICHA].reverse().filter((t) => t.valor <= 100)
 
 const banca = useDineroStore()
 
+const ruletaRef = ref<HTMLElement | null>(null)
 const apuestas = ref<Record<string, number>>({})
 const historial = ref<{ clave: string; valor: number }[]>([])
 const apuestasAnteriores = ref<Record<string, number>>({})
@@ -176,8 +183,23 @@ function repetir() {
   mensaje.value = 'Apuestas repetidas. Pulsa «Girar».'
 }
 
+function estiloMarca(clave: string) {
+  const importe = apuestas.value[clave]
+  if (!importe) return {}
+  const tipo = desglosarApuesta(importe)[0]!.tipo
+  return { '--color': tipo.color, '--borde': tipo.borde, '--texto': tipo.texto }
+}
+
+function etiquetaImporte(importe: number) {
+  return importe >= 1000 ? `${importe / 1000}K` : String(importe)
+}
+
 async function girar() {
   if (girando.value || totalApostado.value < 1) return
+
+  if (window.matchMedia('(max-width: 600px)').matches) {
+    ruletaRef.value?.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   girando.value = true
   resultado.value = null
@@ -226,7 +248,7 @@ async function girar() {
 </script>
 
 <template>
-  <section class="ruleta">
+  <section ref="ruletaRef" class="ruleta">
     <div class="contenido">
       <div class="zona">
         <div class="rueda-zona">
@@ -269,13 +291,15 @@ async function girar() {
               :key="c.clave"
               class="celda"
               :class="c.clase"
-              :style="{ gridColumn: c.columna, gridRow: c.fila }"
+              :style="{ '--c': c.c, '--cs': c.cs, '--f': c.f, '--fs': c.fs }"
               :disabled="girando"
               :aria-label="`Apostar a ${c.etiqueta}`"
               @click="apostar(c.clave)"
             >
               {{ c.etiqueta }}
-              <FichasApuesta v-if="apuestas[c.clave]" :cantidad="apuestas[c.clave]!" />
+              <span v-if="apuestas[c.clave]" class="marca" :style="estiloMarca(c.clave)">
+                {{ etiquetaImporte(apuestas[c.clave]!) }}
+              </span>
             </button>
           </div>
         </div>

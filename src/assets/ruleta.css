@@ -192,6 +192,9 @@
 }
 
 .celda {
+  grid-column: var(--c) / span var(--cs);
+  grid-row: var(--f) / span var(--fs);
+
   position: relative;
   display: grid;
   place-items: center;
@@ -225,18 +228,25 @@
   text-transform: uppercase;
 }
 
-.celda > .fichas {
+.marca {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0.85);
-  margin: 0;
-  z-index: 1;
+  width: 1.45rem;
+  height: 1.45rem;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--color);
+  border: 2px dashed var(--borde);
+  box-shadow: 0 0 0 1px var(--color), 0 2px 3px rgba(0, 0, 0, 0.6);
+  color: var(--texto);
+  font-size: 0.55rem;
+  font-weight: 800;
+  line-height: 1;
+  writing-mode: horizontal-tb;
   pointer-events: none;
-}
-
-.celda > .fichas :deep(.ficha) {
-  font-size: 0.75rem;
 }
 
 .mensaje {
@@ -349,6 +359,27 @@
 
 @media (max-width: 600px) {
   .ruleta { padding: 0.5rem; }
+
+  .tablero {
+    overflow-x: visible;
+  }
+
+  .mesa-apuestas {
+    width: min(94vw, 22rem);
+    min-width: 0;
+    grid-template-columns: 2.4rem 2.4rem repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(14, 2.1rem);
+  }
+
+  .celda {
+    grid-column: calc(7 - var(--f) - var(--fs)) / span var(--fs);
+    grid-row: var(--c) / span var(--cs);
+  }
+
+  .celda.exterior:not(.columna) {
+    writing-mode: vertical-rl;
+    letter-spacing: 0.08rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
