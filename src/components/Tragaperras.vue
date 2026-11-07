@@ -137,7 +137,7 @@ async function girar() {
 
   carretes.value.forEach((c, i) => {
     const visibles = c.tira.slice(c.desplaza, c.desplaza + 3)
-    const relleno = Array.from({ length: 14 + i * 8 }, () => simboloAleatorio())
+    const relleno = Array.from({ length: 30 + i * 15 }, () => simboloAleatorio())
     c.tira = [...visibles, ...relleno, ...finales[i]!]
     c.desplaza = 0
     c.animando = false
@@ -147,7 +147,7 @@ async function girar() {
 
   await Promise.all(
     carretes.value.map(async (c, i) => {
-      c.duracion = 1.2 + i * 0.6
+      c.duracion = 2 + i * 1
       c.animando = true
       c.desplaza = c.tira.length - 3
       await esperar(c.duracion * 1000 + 60)
@@ -279,6 +279,9 @@ async function tirarConClick() {
               Repetir {{ ultimaApuesta }}€
             </button>
           </div>
+            <div class="bombillas" aria-hidden="true">
+              <span v-for="n in 12" :key="n" class="bombilla"></span>
+            </div>
         </div>
 
         <div class="palanca" :class="{ suelta: !arrastrando }" :style="{ '--y': palancaY + 'px' }">
